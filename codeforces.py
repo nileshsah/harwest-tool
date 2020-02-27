@@ -27,8 +27,8 @@ class CodeforcesClient:
         submission_code = sub_soup.find('pre', attrs={'id': 'program-source-text'}).text
         return submission_code
 
-    def get_contest_tags(self, contest_url):
-        con_soup = self.__get_content_soup(contest_url)
+    def get_contest_tags(self, problem_url):
+        con_soup = self.__get_content_soup(problem_url)
         span_tags = con_soup.findAll('span', attrs={'class': 'tag-box'})
         return [x.text.strip() for x in span_tags]
 
@@ -52,6 +52,9 @@ class CodeforcesClient:
             problem_name = contest_row.text.strip()
             contest_url = "https://codeforces.com" + contest_row['href']
 
+            if "contest" not in contest_url:  # To avoid gym submissions
+                continue
+
             lang_name = columns[4].text.strip()
 
             print(row['data-submission-id'])
@@ -61,8 +64,6 @@ class CodeforcesClient:
             date_time_obj = datetime.datetime.strptime(date_time_str, '%b/%d/%Y %H:%M')
             print(date_time_obj)
 
-            tags_list = self.get_contest_tags(contest_url)
-            print(", ".join(tags_list))
             sub_url = "https://codeforces.com/contest/" + contest_id + "/submission/" + submission_id
 
             submission = {
@@ -71,7 +72,7 @@ class CodeforcesClient:
                 'problem_name': problem_name,
                 'language': lang_name,
                 'timestamp': date_time_str,
-                'tags': tags_list,
+                # 'tags': tags_list,
                 'submission_id': submission_id,
                 'submission_url': sub_url,
                 # 'submission_code': submission_code

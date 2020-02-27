@@ -37,8 +37,9 @@ class Workflow:
         os.makedirs(os.path.dirname(solution_file_path), exist_ok=True)
         return solution_file_path
 
-    def __to_git_path(self, path):
-        return os.path.join(path.split(os.sep)[1:])
+    @staticmethod
+    def __to_git_path(path):
+        return os.path.join(*path.split(os.sep)[1:])
 
     def __generate_readme(self, sub_list):
         submissions = sorted(
@@ -56,7 +57,7 @@ class Workflow:
             )
             row += '[{lang}](./{path}) | '.format(
                 lang=submission['language'],
-                path=self.__get_solution_path(submission)
+                path=self.__to_git_path(self.__get_solution_path(submission))
             )
             row += ' '.join(['`{tag}`'.format(tag=x) for x in submission['tags']]) + " | "
             row += str(submission['timestamp']) + " | "
@@ -64,14 +65,15 @@ class Workflow:
             index -= 1
         template = open('readme.template', 'r').read()
         readme_data = pystache.render(template, {'submissions': "\n".join(rows)})
-        print (readme_data)
         with open(self.readme_path, 'w') as fp:
             fp.write(readme_data)
 
     def __add_submission(self, submission):
         submission_id = submission['submission_id']
+        problem_url = submission['problem_url']
         if submission_id in self.submissions.keys():
             return False
+        submission['tags'] = self.client.get_contest_tags(problem_url)
         solution_file_path = self.__get_solution_path(submission)
         solution_code = self.client.get_submission_code(contest_id=submission['contest_id'], submission_id=submission_id)
         with open(solution_file_path, 'w') as fp:
@@ -85,15 +87,18 @@ class Workflow:
         self.git.add(os.path.abspath(self.submission_json_path))
 
         commit_message  = "Add solution for problem `" + submission['problem_name'] + "`\n"
-        commit_message += "Link: " + submission['problem_url'] + "\n"
+        commit_message += "Link: " + problem_url + "\n"
         commit_message += "Tags: " + ', '.join(submission['tags']) + "\n"
         commit_message += "Ref: " + submission['submission_url']
         self.git.commit(message=commit_message, date=submission['timestamp'], author=self.author)
+
+        return True
 
     def run(self):
         self.__init_submissions_directory()
         last_page_index = self.client.get_submissions_page_count()
         for page_index in range(1, last_page_index + 1):
+            print("Currently scanning page " + str(page_index) + " of " + str(last_page_index))
             submissions = self.client.get_user_submissions(page_index)
             response = [self.__add_submission(x) for x in submissions]
             if not any(response):
