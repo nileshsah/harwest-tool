@@ -1,0 +1,15 @@
+{
+  "GNU C++17": "cpp",
+  "GNU C++14": "cpp",
+  "GNU C++11": "cpp",
+  "MS C++": "cpp",
+  "MS C++ 2017": "cpp",
+  "Scala": "scala",
+  "Java 8": "java",
+  "Java 7": "java",
+  "PyPy 2": "py",
+  "PyPy 3": "py",
+  "Python 2": "py",
+  "Python 3": "py",
+  "Kotlin": "kt"
+}
