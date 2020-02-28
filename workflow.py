@@ -112,15 +112,3 @@ class Workflow:
             except GitCommandError: pass
             # self.git.push("-f", "origin", "master") # Not recommended
             self.git.push("origin", "master")
-
-
-
-
-
-
-
-
-
-
-
-
