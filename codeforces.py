@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import urllib
 import datetime
+import requests
 
 
 class CodeforcesClient:
@@ -22,7 +23,10 @@ class CodeforcesClient:
         return int(pages[-1].find('a').text)
 
     def get_submission_code(self, contest_id, submission_id):
-        sub_url = "https://codeforces.com/contest/" + contest_id + "/submission/" + submission_id
+        sub_url = "https://codeforces.com/contest/{contest_id}/submission/{submission_id}".format(
+            contest_id=contest_id,
+            submission_id=submission_id
+        )
         sub_soup = self.__get_content_soup(sub_url)
         submission_code = sub_soup.find('pre', attrs={'id': 'program-source-text'}).text
         return submission_code
@@ -33,46 +37,61 @@ class CodeforcesClient:
         return [x.text.strip() for x in span_tags]
 
     def get_user_submissions(self, page_index):
-        base_url = "https://codeforces.com/submissions/" + self.user + "/page/" + str(page_index)
-        soup = self.__get_content_soup(base_url)
-        table = soup.find('table', attrs={'class': 'status-frame-datatable'})
+        base_url = "https://codeforces.com/api/user.status?handle={handle}&from={start_page}&count=50".format(
+            handle=self.user,
+            start_page=(page_index - 1) * 50 + 1
+        )
+        response = requests.get(base_url).json()
+        if not response['status'] == "OK":
+            raise ValueError("Error while fetching submissions: " + response)
+
         submissions = []
-
-        rows = table.find_all('tr')
-        for row in rows:
-            if not row.has_attr('data-submission-id'): continue
-            submission_id = row['data-submission-id']
-            columns = row.find_all('td')
-
-            status = columns[5].find('span', attrs={'class': 'verdict-accepted'})
-            if status is None: continue
-
-            contest_row = columns[3].find('a')
-            contest_id = contest_row['href'].split('/')[2]
-            problem_name = contest_row.text.strip()
-            contest_url = "https://codeforces.com" + contest_row['href']
-
-            if "contest" not in contest_url:  # To avoid gym submissions
+        for row in response['result']:
+            if 'verdict' not in row.keys():
+                continue
+            if 'contestId' not in row.keys():
+                continue
+            if row['testset'] != "TESTS":
                 continue
 
-            lang_name = columns[4].text.strip()
+            contest_id = row['contestId']
+            if contest_id > 100000: continue  # Ignore gym submissions
 
-            print(row['data-submission-id'])
-            print(contest_id, problem_name, lang_name, contest_url)
+            status = row['verdict']
+            if status != "OK": continue  # Only process accepted solutions
 
-            date_time_str = columns[1].find('span').text
-            date_time_obj = datetime.datetime.strptime(date_time_str, '%b/%d/%Y %H:%M')
-            print(date_time_obj)
+            submission_id = int(row['id'])
 
-            sub_url = "https://codeforces.com/contest/" + contest_id + "/submission/" + submission_id
+            problem = row['problem']
+            problem_index = problem['index']
+            problem_name = problem['name']
+            tags_list = problem['tags']
+            if 'rating' in problem:
+                tags_list.append("*" + str(problem['rating']))
 
+            contest_url = "https://codeforces.com/contest/{contest_id}/problem/{problem_index}".format(
+                contest_id=contest_id,
+                problem_index=problem_index
+            )
+            lang_name = row['programmingLanguage']
+
+            print(submission_id, contest_id, problem_name, lang_name, contest_url)
+
+            timestamp = row['creationTimeSeconds']
+            date_time_str = datetime.datetime.fromtimestamp(timestamp).strftime('%b/%d/%Y %H:%M')
+
+            sub_url = "https://codeforces.com/contest/{contest_id}/submission/{submission_id}".format(
+                contest_id=contest_id,
+                submission_id=submission_id
+            )
             submission = {
                 'contest_id': contest_id,
+                'problem_index': problem_index,
                 'problem_url': contest_url,
                 'problem_name': problem_name,
                 'language': lang_name,
                 'timestamp': date_time_str,
-                # 'tags': tags_list,
+                'tags': tags_list,
                 'submission_id': submission_id,
                 'submission_url': sub_url,
                 # 'submission_code': submission_code

@@ -1,7 +1,5 @@
 import os
 import shutil
-import pystache
-import datetime
 
 from git import Repo
 
@@ -24,15 +22,15 @@ class Workflow:
             git = Repo.init(self.submission_json_path).git
             shutil.copy2("readme.template", self.readme_path)
             git.add("README.md")
-            git.commit(message="Initial commit with README.md", date="20 years ago", author=self.author)
+            git.commit(message="Initial commit with README.md", date="Jan/01/2000 00:00", author=self.author)
         self.git = Repo.init(self.submissions_directory).git
 
     def __get_solution_path(self, submission):
         submission_lang = submission['language']
         lang_ext = config.get_language_extension(submission_lang)
-        problem_code = submission['problem_name'].split()[0]
+        problem_code = submission['problem_index']
         solution_file_name = problem_code + "." + lang_ext
-        solution_file_path = os.path.join(self.submissions_directory, "src",
+        solution_file_path = os.path.join(self.submissions_directory, "codeforces",
                                           str(submission['contest_id']), solution_file_name)
         os.makedirs(os.path.dirname(solution_file_path), exist_ok=True)
         return solution_file_path
@@ -44,14 +42,15 @@ class Workflow:
     def __generate_readme(self, sub_list):
         submissions = sorted(
             sub_list,
-            key=lambda s: datetime.datetime.strptime(s['timestamp'], '%b/%d/%Y %H:%M'),
+            key=lambda s: s['submission_id'],
             reverse=True
         )
         index = len(sub_list)
         rows = []
         for submission in submissions:
             row = str(index) + " | "
-            row += '[{problem_name}]({problem_url}) | '.format(
+            row += '[{problem_index} - {problem_name}]({problem_url}) | '.format(
+                problem_index=submission['problem_index'],
                 problem_name=submission['problem_name'],
                 problem_url=submission['problem_url']
             )
@@ -64,14 +63,14 @@ class Workflow:
             rows.append(row)
             index -= 1
         template = open('readme.template', 'r').read()
-        readme_data = pystache.render(template, {'submissions': "\n".join(rows)})
+        readme_data = template.format(submission_placeholder="\n".join(rows))
         with open(self.readme_path, 'w') as fp:
             fp.write(readme_data)
 
     def __add_submission(self, submission):
         submission_id = submission['submission_id']
         problem_url = submission['problem_url']
-        if submission_id in self.submissions.keys():
+        if str(submission_id) in self.submissions.keys():
             return False
         submission['tags'] = self.client.get_contest_tags(problem_url)
         solution_file_path = self.__get_solution_path(submission)
@@ -94,15 +93,16 @@ class Workflow:
 
         return True
 
-    def run(self):
+    def run(self, start_page_index=1):
         self.__init_submissions_directory()
-        last_page_index = self.client.get_submissions_page_count()
-        for page_index in range(1, last_page_index + 1):
-            print("Currently scanning page " + str(page_index) + " of " + str(last_page_index))
+        page_index = start_page_index
+        while True:
+            print("Currently scanning page " + str(page_index))
             submissions = self.client.get_user_submissions(page_index)
             response = [self.__add_submission(x) for x in submissions]
-            if not any(response):
+            if not len(response) or not any(response):
                 break
+            page_index += 1
 
 myflow = Workflow(config.load_setup_data())
 myflow.run()

@@ -2,6 +2,7 @@
   "GNU C++17": "cpp",
   "GNU C++14": "cpp",
   "GNU C++11": "cpp",
+  "GNU C++": "cpp",
   "MS C++": "cpp",
   "MS C++ 2017": "cpp",
   "Scala": "scala",
