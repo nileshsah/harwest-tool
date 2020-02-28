@@ -15,15 +15,15 @@ class Workflow:
         self.readme_path = os.path.join(self.submissions_directory, "README.md")
         self.client = CodeforcesClient(user_data['username'])
         self.author = '{name} <{email}>'.format(name=user_data['name'], email=user_data['email'])
-        self.submissions = config.load_submissions_data(self.submission_json_path)
 
     def __init_submissions_directory(self):
-        if not os.path.exists(self.submission_json_path):
-            git = Repo.init(self.submission_json_path).git
+        if not os.path.exists(self.submissions_directory):
+            git = Repo.init(self.submissions_directory).git
             shutil.copy2("readme.template", self.readme_path)
             git.add("README.md")
             git.commit(message="Initial commit with README.md", date="Jan/01/2000 00:00", author=self.author)
-        self.git = Repo.init(self.submissions_directory).git
+        self.git = Repo(self.submissions_directory).git
+        self.submissions = config.load_submissions_data(self.submission_json_path)
 
     def __get_solution_path(self, submission):
         submission_lang = submission['language']
@@ -103,9 +103,6 @@ class Workflow:
             if not len(response) or not any(response):
                 break
             page_index += 1
-
-myflow = Workflow(config.load_setup_data())
-myflow.run()
 
 
 

@@ -27,11 +27,10 @@ def get_language_extension(lang_name):
 
 
 def load_submissions_data(path):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
     if not os.path.exists(path):
         open(path, 'w').write("{}")
     return json.load(open(path, 'r'))
 
 
 def write_submissions_data(path, submissions):
-    json.dump(submissions, open(path, 'w'))
+    json.dump(obj=submissions, sort_keys=True, indent=2, fp=open(path, 'w'))
