@@ -28,6 +28,9 @@ class CodeforcesClient:
             submission_id=submission_id
         )
         sub_soup = self.__get_content_soup(sub_url)
+        # For debug purpose
+        # print(sub_url)
+        # open("last_submission_page.html", "w").write(str(sub_soup))
         submission_code = sub_soup.find('pre', attrs={'id': 'program-source-text'}).text
         return submission_code
 
@@ -94,7 +97,6 @@ class CodeforcesClient:
                 'tags': tags_list,
                 'submission_id': submission_id,
                 'submission_url': sub_url,
-                # 'submission_code': submission_code
             }
             submissions.append(submission)
         return submissions

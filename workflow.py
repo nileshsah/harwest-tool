@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from git import Repo
+from git import Repo, GitCommandError
 
 import config
 from codeforces import CodeforcesClient
@@ -77,7 +77,7 @@ class Workflow:
         solution_code = self.client.get_submission_code(contest_id=submission['contest_id'], submission_id=submission_id)
         with open(solution_file_path, 'w') as fp:
             fp.write(solution_code)
-        self.submissions[submission_id] = submission
+        self.submissions[str(submission_id)] = submission
         self.__generate_readme(list(self.submissions.values()))
         config.write_submissions_data(self.submission_json_path, self.submissions)
 
@@ -85,10 +85,13 @@ class Workflow:
         self.git.add(os.path.abspath(solution_file_path))
         self.git.add(os.path.abspath(self.submission_json_path))
 
-        commit_message  = "Add solution for problem `" + submission['problem_name'] + "`\n"
-        commit_message += "Link: " + problem_url + "\n"
-        commit_message += "Tags: " + ', '.join(submission['tags']) + "\n"
-        commit_message += "Ref: " + submission['submission_url']
+        commit_message  = "Add solution for problem `{problem_index} - {problem_name}`\n".format(
+            problem_name=submission['problem_name'],
+            problem_index=submission['problem_index']
+        )
+        commit_message += "Link: {problem_url}\n".format(problem_url=problem_url)
+        commit_message += "Tags: {tags}\n".format(tags=', '.join(submission['tags']))
+        commit_message += "Ref: {sub_url}".format(sub_url=submission['submission_url'])
         self.git.commit(message=commit_message, date=submission['timestamp'], author=self.author)
 
         return True
@@ -103,6 +106,15 @@ class Workflow:
             if not len(response) or not any(response):
                 break
             page_index += 1
+
+        if "remote" in self.user_data.keys():
+            try: self.git.remote("add", "origin", self.user_data['remote'])
+            except GitCommandError: pass
+            # self.git.push("-f", "origin", "master") # Not recommended
+            self.git.push("origin", "master")
+
+
+
 
 
 
