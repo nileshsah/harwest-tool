@@ -78,7 +78,7 @@ class CodeforcesClient:
             )
             lang_name = row['programmingLanguage']
 
-            print(submission_id, contest_id, problem_name, lang_name, contest_url)
+            # print(submission_id, contest_id, problem_name, lang_name, contest_url)
 
             timestamp = row['creationTimeSeconds']
             date_time_str = datetime.datetime.fromtimestamp(timestamp).strftime('%b/%d/%Y %H:%M')
