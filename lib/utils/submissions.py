@@ -1,4 +1,6 @@
 import os
+
+from datetime import datetime
 from lib.utils import config
 
 
@@ -21,7 +23,7 @@ class Submissions:
   def __generate_readme(self, submissions):
     submissions = sorted(
       submissions,
-      key=lambda s: s['submission_id'],
+      key=lambda s: datetime.strptime(s['timestamp'], '%b/%d/%Y %H:%M'),
       reverse=True
     )
     index = len(submissions)

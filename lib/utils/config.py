@@ -9,7 +9,10 @@ lang_dict = json.load(open(RESOURCES_DIR.joinpath('language.json'), 'r'))
 
 
 def load_setup_data():
-  return json.load(open(RESOURCES_DIR.joinpath('setup.json'), 'r'))
+  path = RESOURCES_DIR.joinpath('setup.json')
+  if not os.path.exists(path):
+    return None
+  return json.load(open(path, 'r'))
 
 
 def get_submissions_dir():
@@ -45,3 +48,8 @@ def load_submissions_data(path):
 
 def write_submissions_data(path, submissions):
   json.dump(obj=submissions, sort_keys=True, indent=2, fp=open(path, 'w'))
+
+
+def write_setup_data(setup):
+  json.dump(obj=setup, sort_keys=True, indent=2,
+            fp=open(RESOURCES_DIR.joinpath('setup.json'), 'w'))

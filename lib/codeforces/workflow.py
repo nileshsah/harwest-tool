@@ -57,11 +57,11 @@ class CodeforcesWorkflow:
 
   @staticmethod
   def __to_git_path(path):
-    return os.path.join(*path.split(os.sep)[1:])
+    return os.path.join(*path.split(os.sep)[-3:])
 
   @staticmethod
   def __print_progress(submission, page_index, iteration, total, width):
-    text = f"\rCurrently scanning page #{page_index}: ({iteration}/{total})" + \
+    text = f"\r⌛ Currently scanning page #{page_index}: ({iteration}/{total})" + \
            f" {submission['problem_name']} {submission['problem_url']}"
     print("\r", " " * width, end='\r')
     print(text, end='\r')
@@ -85,3 +85,4 @@ class CodeforcesWorkflow:
       print()
 
     self.repository.push()
+    print("✅ The repository was successfully updated!")

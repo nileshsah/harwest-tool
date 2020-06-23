@@ -1,11 +1,11 @@
-from bs4 import BeautifulSoup
 import urllib
-import datetime
 import requests
+
+from datetime import datetime
+from bs4 import BeautifulSoup
 
 
 class CodeforcesClient:
-
     def __init__(self, user_name):
         self.user = user_name
 
@@ -81,7 +81,7 @@ class CodeforcesClient:
             # print(submission_id, contest_id, problem_name, lang_name, contest_url)
 
             timestamp = row['creationTimeSeconds']
-            date_time_str = datetime.datetime.fromtimestamp(timestamp).strftime('%b/%d/%Y %H:%M')
+            date_time_str = datetime.fromtimestamp(timestamp).strftime('%b/%d/%Y %H:%M')
 
             sub_url = "https://codeforces.com/contest/{contest_id}/submission/{submission_id}".format(
                 contest_id=contest_id,
