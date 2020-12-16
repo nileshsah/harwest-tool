@@ -24,6 +24,8 @@ class CodeforcesWorkflow:
     solution_file_path = self.__get_solution_path(submission)
     solution_code = self.client.get_submission_code(
       contest_id=submission['contest_id'], submission_id=submission_id)
+    if solution_code is None:
+      return False
     with open(solution_file_path, 'w') as fp:
       fp.write(solution_code)
     submission['path'] = self.__to_git_path(self.__get_solution_path(submission))

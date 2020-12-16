@@ -42,7 +42,7 @@ def init():
   config_dict = {
     'name': input("Author Name: "),
     'email': input("Author Email: "),
-    'directory': directory
+    'directory': path
   }
   remote = input("(Optional) Remote URL: ")
   if len(remote):

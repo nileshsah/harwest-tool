@@ -31,8 +31,10 @@ class CodeforcesClient:
         # For debug purpose
         # print(sub_url)
         # open("last_submission_page.html", "w").write(str(sub_soup))
-        submission_code = sub_soup.find('pre', attrs={'id': 'program-source-text'}).text
-        return submission_code
+        submission_code = sub_soup.find('pre', attrs={'id': 'program-source-text'})
+        if submission_code is None:
+            return None
+        return submission_code.text
 
     def get_contest_tags(self, problem_url):
         con_soup = self.__get_content_soup(problem_url)
