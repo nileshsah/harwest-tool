@@ -8,7 +8,7 @@ from setuptools import setup, find_packages
 
 version = re.search(
     '^__version__\s*=\s*"(.*)"',
-    open('harwest/harwest.py').read(),
+    open('harwest/__init__.py').read(),
     re.M
 ).group(1)
 
@@ -34,7 +34,7 @@ setup(
     author_email="nilesh.sah13@outlook.com",
     zip_safe=False,
     url="https://github.com/nileshsah/harwest-tool",
-    python_requires='>=3.6',
+    python_requires='>=3.5',
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

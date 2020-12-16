@@ -44,7 +44,7 @@ class Submissions:
       row += str(submission['timestamp']) + " | "
       rows.append(row)
       index -= 1
-    template = open(config.RESOURCES_DIR.joinpath("readme.template"), 'r').read()
+    template = open(str(config.RESOURCES_DIR.joinpath("readme.template")), 'r').read()
     readme_data = template.format(submission_placeholder="\n".join(rows))
     with open(self.readme_path, 'w') as fp:
       fp.write(readme_data)

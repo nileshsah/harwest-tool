@@ -1,2 +1,4 @@
 include LICENSE
+include requirements.txt
 recursive-include harwest/lib/ *.py *.json *.template
+exclude harwest/lib/resources/setup.json

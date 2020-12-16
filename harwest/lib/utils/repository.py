@@ -20,8 +20,10 @@ class Repository:
   def init(self):
     if not os.path.exists(self.submissions_directory):
       git = Repo.init(self.submissions_directory).git
+      git.config("user.email", config.get_author_email())
+      git.config("user.name", config.get_author_name())
       shutil.copy2(
-        config.RESOURCES_DIR.joinpath("readme.template"),
+        str(config.RESOURCES_DIR.joinpath("readme.template")),
         self.readme_path)
       git.add("README.md")
       git.commit(message="Initial commit with README.md",

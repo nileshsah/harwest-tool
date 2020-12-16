@@ -63,8 +63,9 @@ class CodeforcesWorkflow:
 
   @staticmethod
   def __print_progress(submission, page_index, iteration, total, width):
-    text = f"\r\U0000231B  Currently scanning page #{page_index}: ({iteration}/{total})" + \
-           f" {submission['problem_name']} {submission['problem_url']}"
+    text = "\r\U0000231B  Currently scanning page #%d: (%d/%d) " \
+           % (page_index, iteration, total)
+    text += submission['problem_name'] + " " + submission['problem_url']
     print("\r", " " * width, end='\r')
     print(text, end='\r')
     return len(text)
