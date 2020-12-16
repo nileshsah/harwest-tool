@@ -63,14 +63,14 @@ class CodeforcesWorkflow:
 
   @staticmethod
   def __print_progress(submission, page_index, iteration, total, width):
-    text = f"\r⌛ Currently scanning page #{page_index}: ({iteration}/{total})" + \
+    text = f"\r\U0000231B  Currently scanning page #{page_index}: ({iteration}/{total})" + \
            f" {submission['problem_name']} {submission['problem_url']}"
     print("\r", " " * width, end='\r')
     print(text, end='\r')
     return len(text)
 
   def run(self, start_page_index=1):
-    print ('⛏️Harvesting Codeforces (%s) Submissions to %s' %
+    print ("\U000026CF", "️Har'w'esting Codeforces (%s) Submissions to %s" %
            (self.user_data['codeforces'], self.submissions_directory))
     page_index = start_page_index
     try:
@@ -89,4 +89,4 @@ class CodeforcesWorkflow:
       print()
 
     self.repository.push()
-    print("✅ The repository was successfully updated!")
+    print("\U00002705", "The repository was successfully updated!")

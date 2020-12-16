@@ -38,7 +38,7 @@ class Repository:
   def push(self, force_push=False):
     remote_url = config.get_remote_url()
     if not remote_url:
-      print("❗ The remote git repository url is not defined, skipping push")
+      print("\U00002757", "The remote git repository url is not defined, skipping push")
     else:
       try:
         self.git.remote("add", "origin", remote_url)
@@ -47,4 +47,4 @@ class Repository:
       if force_push:
         args.insert(0, "-f")
       self.git.push(*args)
-      print("👌 The updates were automatically pushed to the remote repository")
+      print("\U0001F44C", "The updates were automatically pushed to the remote repository")

@@ -48,7 +48,7 @@ def init():
   print("\n[2] Then let's build your author tag which will appear in your Git commits as:\n",
         "   Author: Steve Jobs <steve.jobs@apple.com>")
   config_dict = {
-    'name': input("> So what would your beautiful Author Name be? "),
+    'name': input("> So what would your beautiful Author Full Name be? "),
     'email': input("> And of course, your magical Author Email Address? "),
     'directory': path
   }
