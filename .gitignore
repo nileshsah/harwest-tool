@@ -10,6 +10,7 @@
 !setup.py
 !MANIFEST.in
 !harwest-runner.py
+!LICENSE
 
 # Still ignore these files
 __pycache__
