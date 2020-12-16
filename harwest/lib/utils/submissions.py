@@ -1,7 +1,7 @@
 import os
 
 from datetime import datetime
-from lib.utils import config
+from harwest.lib.utils import config
 
 
 class Submissions:

@@ -1,0 +1,1 @@
+recursive-include harwest/lib/ *.py *.json *.template

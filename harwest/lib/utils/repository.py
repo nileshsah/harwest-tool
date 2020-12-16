@@ -1,6 +1,6 @@
 import os
 import shutil
-from lib.utils import config
+from harwest.lib.utils import config
 
 from git import Repo, GitCommandError
 

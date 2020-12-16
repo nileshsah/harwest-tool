@@ -7,6 +7,8 @@ RESOURCES_DIR = ROOT_DIR.joinpath('lib', 'resources')
 
 lang_dict = json.load(open(RESOURCES_DIR.joinpath('language.json'), 'r'))
 
+def get_current_path():
+  return
 
 def load_setup_data():
   path = RESOURCES_DIR.joinpath('setup.json')

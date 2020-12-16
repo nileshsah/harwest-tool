@@ -1,8 +1,12 @@
+# coding=utf-8
+
+__version__ = "0.1.0"
+
 import os
 import argparse
 
-from lib.utils import config
-from lib.codeforces.workflow import CodeforcesWorkflow
+from harwest.lib.utils import config
+from harwest.lib.codeforces.workflow import CodeforcesWorkflow
 
 
 def build_argument_parser():
@@ -20,14 +24,19 @@ def build_argument_parser():
   cf_parser.add_argument('-p', '--start-page', type=int, default=1,
                          help='The page index to start scraping from (default: 1)')
   cf_parser.set_defaults(func=codeforces)
+
+  lc_parser = subparsers.add_parser(
+    'leetcode', help="Scrape solutions from the leetcode platform")
+  lc_parser.set_defaults(func=leetcode)
+
   return parser
 
 
 def init():
   directory = input("Directory Name: ")
-  path = config.ROOT_DIR.joinpath(directory)
+  path = os.path.join(os.getcwd(), directory)
   if os.path.exists(path):
-    print("⚠️  WARNING! The directory with the path", path, "already exists.\n",
+    print("⚠️ WARNING! The directory with the path", path, "already exists.\n",
           "Please abort and enter a new directory name or ensure that the",
           "directory was previously created with this tool")
   config_dict = {
@@ -43,7 +52,6 @@ def init():
 
 
 def codeforces(args):
-  print (args)
   configs = config.load_setup_data()
   if not configs:
     configs = init()
@@ -55,12 +63,18 @@ def codeforces(args):
     CodeforcesWorkflow(configs).run(start_page_index=args.start_page)
 
 
-if __name__ == '__main__':
+def leetcode(args):
+  print("Whoops, still in the making  ¯\\_(ツ)_/¯")
+
+
+def main():
   parser = build_argument_parser()
   args = parser.parse_args()
 
   config_map = config.load_setup_data()
   if args.init or config_map is None:
-    config_map = init()
+    init()
   if 'func' in args:
     args.func(args)
+  else:
+    print("Please specify the platform to harvest, example: harwest codeforces")

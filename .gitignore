@@ -3,12 +3,15 @@
 
 # Except the following files
 !.gitignore
-!lib
-!lib/**
-!main.py
-!README.md
+!harwest
+!harwest/**
+!README.rst
 !requirements.txt
+!setup.py
+!MANIFEST.in
+!harwest-runner.py
 
 # Still ignore these files
 __pycache__
-lib/resources/setup.json
+*.pyc
+harwest/lib/resources/setup.json

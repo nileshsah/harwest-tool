@@ -1,15 +1,15 @@
 import os
-from lib.utils import config
+from harwest.lib.utils import config
 
-from lib.codeforces.client import CodeforcesClient
-from lib.utils.repository import Repository
-from lib.utils.submissions import Submissions
+from harwest.lib.codeforces.client import CodeforcesClient
+from harwest.lib.utils.repository import Repository
+from harwest.lib.utils.submissions import Submissions
 
 
 class CodeforcesWorkflow:
   def __init__(self, user_data):
     self.user_data = user_data
-    self.submissions_directory = config.ROOT_DIR.joinpath(user_data['directory'])
+    self.submissions_directory = user_data['directory']
     self.client = CodeforcesClient(user_data['codeforces'])
     self.repository = Repository(self.submissions_directory)
     self.submissions = Submissions(self.submissions_directory)
@@ -68,6 +68,8 @@ class CodeforcesWorkflow:
     return len(text)
 
   def run(self, start_page_index=1):
+    print ('⛏️Harvesting Codeforces (%s) Submissions to %s' %
+           (self.user_data['codeforces'], self.submissions_directory))
     page_index = start_page_index
     try:
       while True:
