@@ -4,9 +4,8 @@
 [![Downloads](https://pepy.tech/badge/harwest)](https://pepy.tech/project/harwest)
 [![PyPI](https://img.shields.io/pypi/l/harwest.svg)](https://github.com/nileshsah/harwest-tool/blob/master/LICENSE)
 
-Your ultimate one-shot tool to har(w)est submissions from different platforms onto one single Git repository
-
-**Harwest** takes away the hassle of managing your submission files on different online-judges by automating the entire process of collecting and organizing your code submissions in one single Git repository.
+**Harwest** takes away the hassle of managing your submission files on different online-judges by
+automating the entire process of collecting and organizing your code submissions in one single Git repository.
 
 ## Highlights
 * Fully automated collection of all yours submissions with minimal effort setup
@@ -19,7 +18,7 @@ Your ultimate one-shot tool to har(w)est submissions from different platforms on
 ## Platforms
 
 Harwest currently has extensive support for the [Codeforces](https://codeforces.com/) platform 
-while integration with various other platforms are still in the kitchen. Contributions are always welcomed.
+while integration with various other OJs are still in the kitchen. Contributions are always welcomed.
 
 
 ## Installation

@@ -71,7 +71,7 @@ class CodeforcesWorkflow:
     return len(text)
 
   def run(self, start_page_index=1):
-    print ("\U000026CF", "️Har'w'esting Codeforces (%s) Submissions to %s" %
+    print ("\U000026CF", "️Harvesting Codeforces (%s) Submissions to %s" %
            (self.user_data['codeforces'], self.submissions_directory))
     page_index = start_page_index
     try:
