@@ -7,7 +7,7 @@
 **Harwest** takes away the hassle of managing your submission files on different online-judges by
 automating the entire process of collecting and organizing your code submissions in one single Git repository.
 
-Here's a sample repository created with Harwest: [harwest-sample](https://github.com/nileshsah/harwest-sample)
+Here's a sample repository created using Harwest: [harwest-sample](https://github.com/nileshsah/harwest-sample)
 
 ## Highlights
 * Fully automated collection of all yours submissions with minimal effort setup
