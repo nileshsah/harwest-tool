@@ -5,7 +5,7 @@
 !.gitignore
 !harwest
 !harwest/**
-!README.rst
+!README.md
 !requirements.txt
 !setup.py
 !MANIFEST.in
