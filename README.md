@@ -9,7 +9,7 @@ Your ultimate one-shot tool to har(w)est submissions from different platforms on
 **Harwest** takes away the hassle of managing your submission files on different online-judges by automating the entire process of collecting and organizing your code submissions in one single Git repository.
 
 ## Highlights
-* Fully automated collection of your most recent submissions with minimal effort setup
+* Fully automated collection of all yours submissions with minimal effort setup
 * Simple and easy to use interface to get you started in minutes
 * Extensive traceability for your submissions with reference to the problem, tags, submission date and more
 * Single commit for each submission stamped with the original submission date for building rich and accurate contributions graph
@@ -30,6 +30,7 @@ Refer to the documentation for installing `pip` on [windows](https://phoenixnap.
 [mac](https://docs.python-guide.org/starting/install3/osx/) 
 
 The package is available at <https://pypi.python.org/pypi/harwest> [![PyPI](https://img.shields.io/pypi/v/harwest.svg)](https://pypi.python.org/pypi/harwest)
+
 Run the following command in the terminal to install the package:
 ```bash
 $ pip3 install harwest
@@ -47,18 +48,24 @@ In case you're using Harwest for the first time, you'd be greeted with a set of 
 that you'll have to complete to set up the tool.
 
 - **Step [1]** requires you to select a directory name where all your code submissions will be stored. 
-  The directory will be created under the same path from where you executed the command. In case
+  The directory will be created under the same path from where you executed the command. 
+  
+  In case
   you'd like to set up the directory at some other location then press \<Ctrl\>+\<C\> to exit from
   the setup and execute the command again from your desired location.
 - **Step [2]** is straight-forward and asks you to enter your full-name and email address which will be 
-  used for setting up the git repository. **NOTE:** For the contributions to show up in the 
+  used for setting up the git repository. 
+  
+  **NOTE:** For the contributions to show up in the 
   contributions streak graph, the provided email address must be the same as the email address
   associated with your GitHub/BitBucket account 
-  (refer: <https://dev.to/duhbhavesh/why-my-commits-aren-t-showing-up-on-github-contributions-graph-3a2h>)
+  
 - **Step [3]** though optional, takes away the effort of even pushing the changes to the Git repository
   from you. To take advantage of this feature, create an **empty** git repository in [GitHub](https://github.com/new) 
   or BitBucket _(without any README, .gitignore or license)_ and copy and paste the git remote url
-  as input for this step. If you however don't want automated pushes for your repository then leave 
+  as input for this step. 
+  
+  If you however don't want automated pushes for your repository then leave 
   the input as empty and press \<enter\>.   
 
 
@@ -106,6 +113,26 @@ command, you'll be prompted for providing your Codeforces handle name
 ```
 
 Harwest will then start scraping all your submissions, starting from page 1 till the very end.
+
+```bash
+nellex@HQ:~$ harwest codeforces
+
+      __  __                              __
+     / / / /___ _______      _____  _____/ /_
+    / /_/ / __ `/ ___/ | /| / / _ \/ ___/ __/
+   / __  / /_/ / /   | |/ |/ /  __(__  ) /_
+  /_/ /_/\__,_/_/    |__/|__/\___/____/\__/
+
+  =============================== by _nellex_
+
+⛏ ️Harvesting Codeforces (nellex) Submissions to /home/nellex/accepted
+⌛  Currently scanning page #1: (24/24) Phoenix and Beauty https://codeforces.com/contest/1348/problem/B
+Username for 'https://github.com': nileshsah
+Password for 'https://nileshsah@github.com':
+👌 The updates were automatically pushed to the remote repository
+✅ The repository was successfully updated!
+```
+
 In case the scraping stops at any page due to some server error, you can restart scraping from the 
 failed page by running the command (page 3 in this case)
 

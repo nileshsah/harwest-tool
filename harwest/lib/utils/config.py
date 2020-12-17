@@ -47,8 +47,8 @@ def get_remote_url():
 def get_language_extension(lang_name):
   if lang_name not in lang_dict.keys():
     raise ValueError(
-      "Please provide correct file extension for the language " + lang_name +
-      " in language.json file")
+      "Please provide correct file extension for the language '" + lang_name +
+      "' in", str(RESOURCES_DIR.joinpath('language.json')), "file")
   return lang_dict[lang_name]
 
 
