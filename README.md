@@ -24,10 +24,10 @@ while integration with various other platforms are still in the kitchen. Contrib
 
 ## Installation
 
-You would need `Python 3.5+` along with `pip3` in order to be able to install and use the tool. 
+You will require `Python 3.5+` along with `pip3` in order to be able to install and use Harwest.
 Refer to the documentation for installing `pip` on [windows](https://phoenixnap.com/kb/install-pip-windows), 
 [ubuntu/linux](https://phoenixnap.com/kb/how-to-install-python-3-ubuntu) or
-[mac](https://docs.python-guide.org/starting/install3/osx/) 
+[macOS](https://docs.python-guide.org/starting/install3/osx/)
 
 The package is available at <https://pypi.python.org/pypi/harwest> [![PyPI](https://img.shields.io/pypi/v/harwest.svg)](https://pypi.python.org/pypi/harwest)
 
@@ -39,7 +39,7 @@ $ pip3 install harwest
 
 ## Getting Started
 
-After installing the package, run the command in the terminal:
+After installing the package, run the following command in the terminal:
 ```bash
 $ harwest
 ```
@@ -56,9 +56,8 @@ that you'll have to complete to set up the tool.
 - **Step [2]** is straight-forward and asks you to enter your full-name and email address which will be 
   used for setting up the git repository. 
   
-  **NOTE:** For the contributions to show up in the 
-  contributions streak graph, the provided email address must be the same as the email address
-  associated with your GitHub/BitBucket account 
+  NOTE: For the contributions to show up in the contributions streak graph, the provided email 
+  address must be the same as the email address associated with your GitHub/BitBucket account 
   
 - **Step [3]** though optional, takes away the effort of even pushing the changes to the Git repository
   from you. To take advantage of this feature, create an **empty** git repository in [GitHub](https://github.com/new) 
@@ -66,7 +65,7 @@ that you'll have to complete to set up the tool.
   as input for this step. 
   
   If you however don't want automated pushes for your repository then leave 
-  the input as empty and press \<enter\>.   
+  the input as empty and press \<enter\>. You can always push the repository to remote manually.
 
 
 ```bash
@@ -78,7 +77,7 @@ nellex@HQ:~$ harwest
    / __  / /_/ / /   | |/ |/ /  __(__  ) /_
   /_/ /_/\__,_/_/    |__/|__/\___/____/\__/
 
-  =============================== by _nellex_
+  ==========================================
 
 Hey there! 👋 Looks like you're using Harwest for the first time. Let's get you started 🚀
 
@@ -90,7 +89,7 @@ Hey there! 👋 Looks like you're using Harwest for the first time. Let's get yo
 [2] Then let's build your author tag which will appear in your Git commits as:
     Author: Steve Jobs <steve.jobs@apple.com>
 > So what would your beautiful (Author) Full Name be? Nilesh Sah
-> And of course, your magical (Author) Email Address? niles*******@gmail.com
+> And of course, your magical (Author) Email Address? nilesh.sah13@gmail.com
 
 [3] Guess what? We can automate the Git pushes for you too! 🎉
    In case you'd like that, then please specify the remote Git Url for an "empty" repository
@@ -123,7 +122,7 @@ nellex@HQ:~$ harwest codeforces
    / __  / /_/ / /   | |/ |/ /  __(__  ) /_
   /_/ /_/\__,_/_/    |__/|__/\___/____/\__/
 
-  =============================== by _nellex_
+  ==========================================
 
 ⛏ ️Harvesting Codeforces (nellex) Submissions to /home/nellex/accepted
 ⌛  Currently scanning page #1: (24/24) Phoenix and Beauty https://codeforces.com/contest/1348/problem/B
@@ -133,12 +132,23 @@ Password for 'https://nileshsah@github.com':
 ✅ The repository was successfully updated!
 ```
 
-In case the scraping stops at any page due to some server error, you can restart scraping from the 
-failed page by running the command (page 3 in this case)
+In case scanning stops at any page due to some server side error, you can restart scraping from the
+failed page by running the command
 
 ```bash
-$ harwest codeforces --start-page 3
+$ harwest codeforces --start-page 3 # the desired page number
 ```
+
+## Reconfigure
+
+Harwest settings can be reconfigured by running the following command which will then restart the
+entire configuration steps.
+
+```bash
+$ harwest --init
+```
+Harwest provides the ability to re-use an existing directory previously created by this tool for 
+further updates.
 
 ## License
 
