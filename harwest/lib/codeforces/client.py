@@ -1,9 +1,9 @@
-import urllib
 import requests
 
 from datetime import datetime
 from bs4 import BeautifulSoup
 
+requests.packages.urllib3.disable_warnings()
 
 class CodeforcesClient:
     def __init__(self, user_name):
@@ -11,7 +11,7 @@ class CodeforcesClient:
 
     @staticmethod
     def __get_url_content(url):
-        return urllib.request.urlopen(url).read()
+        return requests.get(url, verify=False).content
 
     def __get_content_soup(self, url):
         return BeautifulSoup(self.__get_url_content(url), 'lxml')
@@ -46,7 +46,6 @@ class CodeforcesClient:
             handle=self.user,
             start_page=(page_index - 1) * 50 + 1
         )
-        requests.packages.urllib3.disable_warnings()
         response = requests.get(base_url, verify=False).json()
         if not response['status'] == "OK":
             raise ValueError("Error while fetching submissions: " + response)
