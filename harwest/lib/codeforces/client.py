@@ -46,7 +46,8 @@ class CodeforcesClient:
             handle=self.user,
             start_page=(page_index - 1) * 50 + 1
         )
-        response = requests.get(base_url).json()
+        requests.packages.urllib3.disable_warnings()
+        response = requests.get(base_url, verify=False).json()
         if not response['status'] == "OK":
             raise ValueError("Error while fetching submissions: " + response)
 
