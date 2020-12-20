@@ -37,7 +37,7 @@ class Submissions:
       )
       row += '[{lang}](./{path}) | '.format(
         lang=submission['language'],
-        path=submission['path']
+        path=submission['path'].replace('\\', '/')
       )
       row += ' '.join(['`{tag}`'.format(tag=x) for x in submission['tags']])
       row += " | "
