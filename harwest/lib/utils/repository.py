@@ -1,7 +1,7 @@
 import os
 import shutil
 from harwest.lib.utils import config
-
+from datetime import datetime
 from git import Repo, GitCommandError
 
 
@@ -26,9 +26,8 @@ class Repository:
         str(config.RESOURCES_DIR.joinpath("readme.template")),
         self.readme_path)
       git.add("README.md")
-      Initial_Commit = config.load_setup_data()['initcommitdate']
       git.commit(message="Initial commit with README.md",
-                 date=f"{Initial_Commit}", author=self.author)
+                 date=f"{str(datetime.now().strftime('%b/%d/%Y %H:%M'))}", author=self.author)
 
   def add(self, file_path):
     self.git.add(os.path.abspath(file_path))

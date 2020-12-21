@@ -48,7 +48,6 @@ def init():
   config_dict = {
     'name': input("> So what would your beautiful (Author) Full Name be? "),
     'email': input("> And of course, your magical (Author) Email Address? "),
-    'initcommitdate': input("> Specify a date for your earliest commmit? e.g (\"Jan/01/2000 00:00\")"),
     'directory': path
   }
 
