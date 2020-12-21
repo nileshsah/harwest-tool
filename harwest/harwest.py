@@ -5,6 +5,7 @@ import argparse
 
 from harwest.lib.utils import config
 from harwest.lib.codeforces.workflow import CodeforcesWorkflow
+from harwest.lib.atcoder.workflow import AtcoderWorkflow
 
 
 def build_argument_parser():
@@ -26,6 +27,19 @@ def build_argument_parser():
   lc_parser = subparsers.add_parser(
     'leetcode', help="Scrape solutions from the leetcode platform")
   lc_parser.set_defaults(func=leetcode)
+
+
+
+  ## Atcoder Parser
+  ac_parser = subparsers.add_parser(
+    'atcoder', help="Scrape solutions from the atcoder platform")
+
+  ac_parser.add_argument('-s', '--setup', default=False, action='store_true',
+                         help="Setup the platform configurations")
+  
+  ac_parser.add_argument('-p', '--start-page', type=int, default=1,
+                         help='The submission index to start scraping from (default: 1)')
+  ac_parser.set_defaults(func=atcoder)
 
   return parser
 
@@ -79,6 +93,20 @@ def codeforces(args):
 
 def leetcode(args):
   print("Whoops, still in the making  ¯\\_(ツ)_/¯ Maybe you can help?")
+
+
+
+## Scrape Atcoder Data
+def atcoder(args):
+  configs = config.load_setup_data()
+  if not configs:
+    configs = init()
+  if args.setup or 'atcoder' not in configs:
+    handle = input("> So what's your prestigious Atcoder Handle Name? ")
+    configs['atcoder'] = handle
+    config.write_setup_data(configs)
+  if not args.setup:
+    AtcoderWorkflow(configs).run(start_page_index=args.start_page)
 
 
 def main():
