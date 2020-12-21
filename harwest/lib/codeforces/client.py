@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 
 requests.packages.urllib3.disable_warnings()
 
+
 class CodeforcesClient:
     def __init__(self, user_name):
         self.user = user_name
