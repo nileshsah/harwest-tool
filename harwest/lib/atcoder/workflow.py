@@ -40,7 +40,7 @@ class AtcoderWorkflow:
       fp.write(solution_code.encode("utf-8"))
     submission['path'] = self.__to_git_path(self.__get_solution_path(submission))
 
-    self.submissions.add(submission,platform="atcoder")
+    self.submissions.add(submission)
     self.repository.add(solution_file_path)
 
 
