@@ -26,8 +26,9 @@ class Repository:
         str(config.RESOURCES_DIR.joinpath("readme.template")),
         self.readme_path)
       git.add("README.md")
+      Initial_Commit = config.load_setup_data()['initcommitdate']
       git.commit(message="Initial commit with README.md",
-                 date="Jan/01/2000 00:00", author=self.author)
+                 date=f"{Initial_Commit}", author=self.author)
 
   def add(self, file_path):
     self.git.add(os.path.abspath(file_path))
