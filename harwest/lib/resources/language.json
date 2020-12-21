@@ -1,5 +1,6 @@
 {
   "GNU C++": "cpp",
+  "GNU C++0x": "cpp",
   "GNU C11": "cpp",
   "Clang++17 Diagnostics": "cpp",
   "GNU C++11": "cpp",
