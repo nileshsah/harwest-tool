@@ -80,6 +80,7 @@ class AtcoderClient:
                 'language': lang_name,
                 'timestamp': date_time_str,
                 'submission_id': submission_id,
+                'platform': 'atcoder'
             }
             submissions.append(submission)
         return submissions

@@ -100,6 +100,7 @@ class CodeforcesClient:
                 'tags': tags_list,
                 'submission_id': submission_id,
                 'submission_url': sub_url,
+                'platform' : 'codeforces'
             }
             submissions.append(submission)
         return submissions
