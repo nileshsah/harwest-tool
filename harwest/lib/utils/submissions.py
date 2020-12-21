@@ -26,9 +26,13 @@ class Submissions:
       key=lambda s: datetime.strptime(s['timestamp'], '%b/%d/%Y %H:%M'),
       reverse=True
     )
-    index = len(submissions)
+    index = len(set([x['problem_url'] for x in submissions]))
+    problems = set()
     rows = []
     for submission in submissions:
+      if submission['problem_url'] in problems:
+        continue
+      problems.add(submission['problem_url'])
       row = str(index) + " | "
       if platform == 'atcoder':
         row += '[{problem_name}]({problem_url}) | '.format(
@@ -50,6 +54,7 @@ class Submissions:
       row += str(submission['timestamp']) + " | "
       rows.append(row)
       index -= 1
+
     template = open(str(config.RESOURCES_DIR.joinpath("readme.template")), 'r',
                     encoding="utf-8").read()
     readme_data = template.format(submission_placeholder="\n".join(rows))
