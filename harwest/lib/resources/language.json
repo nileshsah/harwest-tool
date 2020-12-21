@@ -18,6 +18,7 @@
   "Java 11": "java",
   "Java 8": "java",
   "Java 7": "java",
+  "Java 6": "java",
   "Kotlin": "kt",
   "Ocaml": "ml",
   "Delphi": "dpr",
