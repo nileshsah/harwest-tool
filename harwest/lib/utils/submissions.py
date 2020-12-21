@@ -27,6 +27,7 @@ class Submissions:
       reverse=True
     )
     index = len(submissions)
+    problems = set()
     rows = []
     for submission in submissions:
       row = str(index) + " | "
@@ -42,7 +43,9 @@ class Submissions:
       row += ' '.join(['`{tag}`'.format(tag=x) for x in submission['tags']])
       row += " | "
       row += str(submission['timestamp']) + " | "
-      rows.append(row)
+      if submission['problem_url'] not in problems:
+        rows.append(row)
+        problems.add(submission['problem_url'])
       index -= 1
     template = open(str(config.RESOURCES_DIR.joinpath("readme.template")), 'r',
                     encoding="utf-8").read()
