@@ -34,7 +34,7 @@ class Submissions:
         continue
       problems.add(submission['problem_url'])
       row = str(index) + " | "
-      if submission['platform'] == 'atcoder':
+      if 'platform' in submission.keys() and submission['platform'] == 'atcoder':
         row += '[{problem_name}]({problem_url}) | '.format(
           problem_name=submission['problem_name'],
           problem_url=submission['problem_url']
