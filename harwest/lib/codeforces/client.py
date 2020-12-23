@@ -43,9 +43,9 @@ class CodeforcesClient:
         return [x.text.strip() for x in span_tags]
 
     def get_user_submissions(self, page_index):
-        base_url = "https://codeforces.com/api/user.status?handle={handle}&from={start_page}&count=50".format(
+        base_url = "https://codeforces.com/api/user.status?handle={handle}&from={start_page}&count=1000".format(
             handle=self.user,
-            start_page=(page_index - 1) * 50 + 1
+            start_page=(page_index - 1) * 1000 + 1
         )
         response = self.session.get(base_url, verify=False).json()
         if not response['status'] == "OK":
