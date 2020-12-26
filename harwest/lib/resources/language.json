@@ -52,5 +52,8 @@
   "J": "ijs",
   "Q#": "qs",
   "Text": "txt",
-  "UnknownX": "txt"
+  "UnknownX": "txt",
+  "C++ (GCC 9.2.1)": "cpp",
+  "PyPy3 (7.3.0)":"py",
+  "C++14 (GCC 5.4.1)": "cpp"
 }

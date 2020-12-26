@@ -34,11 +34,17 @@ class Submissions:
         continue
       problems.add(submission['problem_url'])
       row = str(index) + " | "
-      row += '[{problem_index} - {problem_name}]({problem_url}) | '.format(
-        problem_index=submission['problem_index'],
-        problem_name=submission['problem_name'],
-        problem_url=submission['problem_url']
-      )
+      if 'platform' in submission.keys() and submission['platform'] == 'atcoder':
+        row += '[{problem_name}]({problem_url}) | '.format(
+          problem_name=submission['problem_name'],
+          problem_url=submission['problem_url']
+        )
+      else:
+        row += '[{problem_index} - {problem_name}]({problem_url}) | '.format(
+          problem_index=submission['problem_index'],
+          problem_name=submission['problem_name'],
+          problem_url=submission['problem_url']
+        )
       row += '[{lang}](./{path}) | '.format(
         lang=submission['language'],
         path=submission['path'].replace('\\', '/')
