@@ -1,4 +1,4 @@
-from harwest.lib.AbstractWorkflow import AbstractWorkflow
+from harwest.lib.abstractworkflow import AbstractWorkflow
 from harwest.lib.atcoder.client import AtcoderClient
 
 

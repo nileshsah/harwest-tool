@@ -18,8 +18,12 @@ class AtcoderClient:
 
     @lru_cache(maxsize = PAGE_SIZE_LIMIT + 5)
     def __http_get(self, url):
-        # print ("GET: " + url)
-        return self.session.get(url, verify=False)
+        req = self.session.get(url, verify=False)
+        if req.status_code != 200:
+            raise AssertionError("Unable to fetch response from: " + url +
+                                 " response code: " + req.status_code)
+        return req
+
 
     def __get_url_content(self, url):
         return self.__http_get(url).content

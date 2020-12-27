@@ -12,7 +12,7 @@ class AbstractWorkflow(ABC):
     self.client = platform_client
     self.submissions_directory = user_data['directory']
     self.repository = Repository(self.submissions_directory)
-    self.submissions = Submissions(self.submissions_directory)
+    self.submissions = Submissions(self.submissions_directory, self.user_data)
 
   def __add_submission(self, submission):
     platform_prefix = self.client.get_platform_name()[1]
@@ -80,7 +80,7 @@ class AbstractWorkflow(ABC):
     print(text, end='\r')
     return len(text) + 5
 
-  def run(self, start_page_index=1):
+  def run(self, start_page_index=1, full_scan=False):
     platform = self.client.get_platform_name()[0]
     print("\U000026CF", "️Harvesting %s (%s) Submissions to %s" %
           (platform, self.user_data[platform.lower()], self.submissions_directory))
@@ -94,7 +94,7 @@ class AbstractWorkflow(ABC):
           response.append(self.__add_submission(submission))
           last_width = self.__print_progress(
             submission, page_index, index + 1, len(submissions), last_width)
-        if not len(response) or not any(response):
+        if not len(response) or (not any(response) and not full_scan):
           break
         page_index += 1
     finally:

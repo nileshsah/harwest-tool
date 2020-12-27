@@ -5,7 +5,8 @@ from harwest.lib.utils import config
 
 
 class Submissions:
-  def __init__(self, submissions_directory):
+  def __init__(self, submissions_directory, user_data):
+    self.user_data = user_data
     self.readme_path = os.path.join(submissions_directory, "README.md")
     self.submission_json_path = \
       os.path.join(submissions_directory, "submissions.json")
@@ -19,6 +20,25 @@ class Submissions:
 
   def contains(self, submission_id):
     return str(submission_id) in self.store
+
+  def __generate_profile(self):
+    profile = ""
+    for platform in [("Codeforces", "https://codeforces.com/profile/{handle}"),
+                     ("AtCoder", "https://atcoder.jp/users/{handle}")]:
+      if platform[0].lower() not in self.user_data:
+        continue
+      handle_name = self.user_data[platform[0].lower()]
+      svg_url = "https://run.kaist.ac.kr/badges/{platform}/{handle}.svg".format(
+        platform=platform[0].lower(),
+        handle=handle_name
+      )
+      profile_url = platform[1].format(handle=handle_name)
+      profile += "* {platform} &nbsp; [![{platform}]({svg_url})]({profile_url})\n".format(
+        platform=platform[0],
+        svg_url=svg_url,
+        profile_url=profile_url
+      )
+    return profile
 
   def __generate_readme(self, submissions):
     submissions = sorted(
@@ -51,6 +71,8 @@ class Submissions:
 
     template = open(str(config.RESOURCES_DIR.joinpath("readme.template")), 'r',
                     encoding="utf-8").read()
-    readme_data = template.format(submission_placeholder="\n".join(rows))
+    readme_data = template.format(
+      profile_placeholder=self.__generate_profile(),
+      submission_placeholder="\n".join(rows))
     with open(self.readme_path, 'w', encoding="utf-8") as fp:
       fp.write(readme_data)

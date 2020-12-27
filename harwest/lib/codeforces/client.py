@@ -104,7 +104,7 @@ class CodeforcesClient:
                 'tags': tags_list,
                 'submission_id': submission_id,
                 'submission_url': sub_url,
-                'platform': self.get_platform_name()
+                'platform': self.get_platform_name()[0]
             }
             submissions.append(submission)
         return submissions
