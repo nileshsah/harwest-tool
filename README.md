@@ -107,7 +107,8 @@ Hey there! 👋 Looks like you're using Harwest for the first time. Let's get yo
 Once the initial set up is complete, you can then execute the command
 
 ```bash
-$ harwest codeforces
+$ harwest <platform>
+$ harwest codeforces # example
 ```
 to harvest your submissions from the Codeforces platform. If it's the first time you're running the 
 command, you'll be prompted for providing your Codeforces handle name
