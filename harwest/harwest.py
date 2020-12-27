@@ -16,27 +16,25 @@ def build_argument_parser():
   subparsers = parser.add_subparsers(
     help='The platform to scrape the solutions from')
 
+  # Codeforces parser
   cf_parser = subparsers.add_parser(
-    'codeforces', help="Scrape solutions from the codeforces platform")
+    'codeforces', help="Scrape solutions from the Codeforces platform")
   cf_parser.add_argument('-s', '--setup', default=False, action='store_true',
                          help="Setup the platform configurations")
   cf_parser.add_argument('-p', '--start-page', type=int, default=1,
                          help='The page index to start scraping from (default: 1)')
   cf_parser.set_defaults(func=codeforces)
 
+  # Leetcode parser
   lc_parser = subparsers.add_parser(
     'leetcode', help="Scrape solutions from the leetcode platform")
   lc_parser.set_defaults(func=leetcode)
 
-
-
-  ## Atcoder Parser
+  # AtCoder Parser
   ac_parser = subparsers.add_parser(
-    'atcoder', help="Scrape solutions from the atcoder platform")
-
+    'atcoder', help="Scrape solutions from the AtCoder platform")
   ac_parser.add_argument('-s', '--setup', default=False, action='store_true',
                          help="Setup the platform configurations")
-  
   ac_parser.add_argument('-p', '--start-page', type=int, default=1,
                          help='The submission index to start scraping from (default: 1)')
   ac_parser.set_defaults(func=atcoder)
@@ -95,8 +93,6 @@ def leetcode(args):
   print("Whoops, still in the making  ¯\\_(ツ)_/¯ Maybe you can help?")
 
 
-
-## Scrape Atcoder Data
 def atcoder(args):
   configs = config.load_setup_data()
   if not configs:

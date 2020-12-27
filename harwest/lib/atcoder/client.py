@@ -2,85 +2,104 @@ import requests
 
 from datetime import datetime
 from bs4 import BeautifulSoup
+from functools import lru_cache
 
 requests.packages.urllib3.disable_warnings()
 
+
 class AtcoderClient:
+    SUBMISSION_URL = "https://atcoder.jp/contests/{contest_id}/submissions/{submission_id}"
+    CONTEST_URL = "https://atcoder.jp/contests/{contest_id}/tasks/{problem_id}"
+    PAGE_SIZE_LIMIT = 20
+
     def __init__(self, user_name):
         self.user = user_name
+        self.session = requests.Session()
 
-    @staticmethod
-    def __get_url_content(url):
-        return requests.get(url, verify=False).content
+    @lru_cache(maxsize = PAGE_SIZE_LIMIT + 5)
+    def __http_get(self, url):
+        # print ("GET: " + url)
+        return self.session.get(url, verify=False)
+
+    def __get_url_content(self, url):
+        return self.__http_get(url).content
 
     def __get_content_soup(self, url):
         return BeautifulSoup(self.__get_url_content(url), 'lxml')
 
-    def get_submission_code(self, submission_url):
-        src = self.__get_content_soup(submission_url)
-        src2 = src
-        src  = src.findAll('pre')[0].text
-        fname = src2.findAll('div',{"class":'panel panel-default'})[0].findAll('td')[1].text
-        return [src,fname]
+    def get_problem_name(self, submission_url):
+        sub_soup = self.__get_content_soup(submission_url)
+        return sub_soup.findAll('div', {"class": 'panel panel-default'})[0] \
+                       .findAll('td')[1].text
 
+    @staticmethod
+    def get_platform_name():
+        return "AtCoder", "AC"
 
-    def get_user_submissions(self, submission_index):
+    def get_submission_code(self, contest_id, submission_id):
+        submission_url = AtcoderClient.SUBMISSION_URL \
+            .format(contest_id=contest_id, submission_id=submission_id)
+        sub_soup = self.__get_content_soup(submission_url)
+        submission_code = sub_soup.find('pre', attrs={"id": "submission-code"})
+        if submission_code is None:
+            return None
+        return submission_code.text
 
-        #Fetch all submissions of a user
+    def get_contest_tags(self, problem_url):
+        con_soup = self.__get_content_soup(problem_url)
+        span_tags = con_soup.findAll('span', attrs={'class': 'tag-box'})
+        return [x.text.strip() for x in span_tags]
+
+    def get_user_submissions(self, page_index):
+        # Fetch submission list for the user using Kenkoooo API
         base_url = "https://kenkoooo.com/atcoder/atcoder-api/results?user={}".format(
             self.user,
         )
-        try:
-            response = requests.get(base_url, verify=False).json()
-        except:
-            raise ValueError("Error while fetching submissions: " + response)
+        response = self.__http_get(base_url).json()
+        if response is None or not len(response):
+            raise ValueError("No submissions found for user " + self.user)
 
         submissions = []
-
-        for i in range(submission_index,len(response)):
-
+        start_index = AtcoderClient.PAGE_SIZE_LIMIT * (page_index - 1)
+        end_index = min(len(response), AtcoderClient.PAGE_SIZE_LIMIT * page_index)
+        for index in range(start_index, end_index):
             # Row -> a dict of submission details
-            row = response[i]
-
-
+            row = response[index]
             if 'result' not in row.keys():
                 continue
             if 'contest_id' not in row.keys():
                 continue
 
-            
-            contest_id = row['contest_id'] ## Contest ID - eg. abc123,arc063
-            status = row['result']  ## Verdict of submission
-
+            contest_id = row['contest_id']
+            status = row['result']
             if status != "AC": continue  # Only process accepted solutions
 
-            submission_id = int(row['id']) ## Id of submission
-            problem_index = row['problem_id'] ## ID/Code of a problem e.g abc145_d
-            problem_url = "https://atcoder.jp/contests/{}/tasks/{}".format(contest_id,problem_index) # Url of the problem page
-
-            submission_url = "https://atcoder.jp/contests/{}/submissions/{}".format(
-                contest_id,
-                submission_id
-            ) ## Submission URL
-
-            lang_name = row['language'] ## Submission Language
+            submission_id = int(row['id'])
+            problem_id = row['problem_id']
+            points = int(row['point'])
+            tags_list = ["AtCoder", "*" + str(points)]
+            problem_url = AtcoderClient.CONTEST_URL \
+                .format(contest_id=contest_id, problem_id=problem_id)
+            lang_name = row['language']
 
             # print(submission_id, contest_id, problem_name, lang_name, contest_url)
 
-            timestamp = row['epoch_second'] ## Time of submission
-            
+            timestamp = row['epoch_second']
             date_time_str = datetime.fromtimestamp(timestamp).strftime('%b/%d/%Y %H:%M')
-
+            submission_url = AtcoderClient.SUBMISSION_URL \
+                .format(contest_id=contest_id, submission_id=submission_id)
 
             submission = {
                 'contest_id': contest_id,
-                'problem_index': problem_index,
-                'problem_url':problem_url,
-                'submission_url':submission_url,
+                # 'problem_index': problem_index, @ enriched in workflow
+                'problem_url': problem_url,
+                # 'problem_name': problem_name, @ enriched in workflow
                 'language': lang_name,
                 'timestamp': date_time_str,
+                'tags': tags_list,
                 'submission_id': submission_id,
-                'platform': 'atcoder'
+                'submission_url': submission_url,
+                'platform': self.get_platform_name()[0]
             }
             submissions.append(submission)
         return submissions

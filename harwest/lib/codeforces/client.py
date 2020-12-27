@@ -17,6 +17,10 @@ class CodeforcesClient:
     def __get_content_soup(self, url):
         return BeautifulSoup(self.__get_url_content(url), 'lxml')
 
+    @staticmethod
+    def get_platform_name():
+        return "Codeforces", "CF"
+
     def get_submissions_page_count(self):
         base_url = "https://codeforces.com/submissions/" + self.user
         sub_soup = self.__get_content_soup(base_url)
@@ -100,7 +104,7 @@ class CodeforcesClient:
                 'tags': tags_list,
                 'submission_id': submission_id,
                 'submission_url': sub_url,
-                'platform' : 'codeforces'
+                'platform': self.get_platform_name()
             }
             submissions.append(submission)
         return submissions
