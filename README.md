@@ -19,7 +19,10 @@ Here's a sample repository created using Harwest: [harwest-sample](https://githu
 
 ## Platforms
 
-Harwest currently has extensive support for the [Codeforces](https://codeforces.com/) platform 
+Harwest currently has extensive support for the following platforms:
+* [Codeforces](https://codeforces.com/)
+* [AtCoder](https://atcoder.jp/) _contributed by [@s-i-d-d-i-s](https://github.com/s-i-d-d-i-s)_
+
 while integration with various other OJs are still in the kitchen. Contributions are always welcomed.
 
 
@@ -134,11 +137,18 @@ Password for 'https://nileshsah@github.com':
 ```
 
 In case scanning stops at any page due to some server side error, you can restart scraping from the
-failed page by running the command
+failed page by running the command:
 
 ```bash
-$ harwest codeforces --start-page 3 # the desired page number
+$ harwest <platform> --start-page N
+$ harwest codeforces --start-page 3 # example
 ```
+
+or instead force Harwest to re-scan the entire submission list for the platform by running:
+ ```bash
+$ harwest <platform> --full-scan
+$ harwest atcoder --full-scan # example
+ ```
 
 ## Reconfigure
 
@@ -150,6 +160,13 @@ $ harwest --init
 ```
 Harwest provides the ability to re-use an existing directory previously created by this tool for 
 further updates.
+
+To change the handle name for a specific platform, you can run:
+```bash
+$ harwest <platform> --setup
+$ harwest codeforces --setup # example
+```
+
 
 ## License
 
