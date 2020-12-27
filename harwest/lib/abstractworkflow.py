@@ -19,11 +19,11 @@ class AbstractWorkflow(ABC):
     submission_id = submission['submission_id']
     submission['submission_id'] = platform_prefix + str(submission['submission_id'])
 
-    # Add or update any additional property for the submission
-    self.enrich_submission(submission)
-
     if self.submissions.contains(submission['submission_id']):
       return False
+
+    # Add or update any additional property for the submission
+    self.enrich_submission(submission)
 
     problem_url = submission['problem_url']
     solution_file_path = self.__get_solution_path(submission)
@@ -75,7 +75,9 @@ class AbstractWorkflow(ABC):
   def __print_progress(submission, page_index, iteration, total, width):
     text = "\r\U0000231B  Currently scanning page #%d: (%d/%d) " \
            % (page_index, iteration, total)
-    text += submission['problem_name'] + " " + submission['problem_url']
+    problem_name = submission['problem_name'] if 'problem_name' in submission else ""
+    problem_url = submission['problem_url'] if 'problem_url' in submission else ""
+    text += problem_name + " " + problem_url
     print("\r", " " * width, end='\r')
     print(text, end='\r')
     return len(text) + 5

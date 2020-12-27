@@ -25,7 +25,7 @@ def build_argument_parser():
     pt_parser.add_argument('-p', '--start-page', type=int, default=1,
                            help='The page index to start scraping from (default: 1)')
     pt_parser.add_argument('-f', '--full-scan', default=False, action='store_true',
-                           help='Run a full scan for the submissions again')
+                           help='Run a full scan for all the submissions')
     pt_parser.set_defaults(func=platform[1])
 
   return parser
