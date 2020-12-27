@@ -62,6 +62,7 @@ class AtcoderClient:
         response = self.__http_get(base_url).json()
         if response is None or not len(response):
             raise ValueError("No submissions found for user " + self.user)
+        response = sorted(response, key=lambda k: k['epoch_second'], reverse=True)
 
         submissions = []
         start_index = AtcoderClient.PAGE_SIZE_LIMIT * (page_index - 1)

@@ -80,7 +80,7 @@ class AbstractWorkflow(ABC):
     text += problem_name + " " + problem_url
     print("\r", " " * width, end='\r')
     print(text, end='\r')
-    return len(text) + 5
+    return len(text)
 
   def run(self, start_page_index=1, full_scan=False):
     platform = self.client.get_platform_name()[0]
