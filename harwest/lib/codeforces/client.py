@@ -1,5 +1,7 @@
 import requests
+import time
 
+import codeforces_api
 from datetime import datetime
 from bs4 import BeautifulSoup
 
@@ -10,6 +12,8 @@ class CodeforcesClient:
     def __init__(self, user_name):
         self.user = user_name
         self.session = requests.Session()
+        self.cf_api = codeforces_api.CodeforcesApi()
+        self.cf_parser = codeforces_api.CodeforcesParser()
 
     def __get_url_content(self, url):
         return self.session.get(url, verify=False).content
@@ -28,18 +32,10 @@ class CodeforcesClient:
         return int(pages[-1].find('a').text)
 
     def get_submission_code(self, contest_id, submission_id):
-        sub_url = "https://codeforces.com/contest/{contest_id}/submission/{submission_id}".format(
-            contest_id=contest_id,
-            submission_id=submission_id
-        )
-        sub_soup = self.__get_content_soup(sub_url)
-        # For debug purpose
-        # print(sub_url)
-        # open("last_submission_page.html", "w").write(str(sub_soup))
-        submission_code = sub_soup.find('pre', attrs={'id': 'program-source-text'})
-        if submission_code is None:
+        try:
+            return self.cf_parser.get_solution(contest_id, submission_id)
+        except Exception:
             return None
-        return submission_code.text
 
     def get_contest_tags(self, problem_url):
         con_soup = self.__get_content_soup(problem_url)
@@ -47,13 +43,7 @@ class CodeforcesClient:
         return [x.text.strip() for x in span_tags]
 
     def get_user_submissions(self, page_index):
-        base_url = "https://codeforces.com/api/user.status?handle={handle}&from={start_page}&count=50".format(
-            handle=self.user,
-            start_page=(page_index - 1) * 50 + 1
-        )
-        response = self.session.get(base_url, verify=False).json()
-        if not response['status'] == "OK":
-            raise ValueError("Error while fetching submissions: " + response)
+        response = self.cf_api.user_status(self.user, (page_index - 1) * 50 + 1, 50)
 
         submissions = []
         for row in response['result']:
@@ -107,4 +97,5 @@ class CodeforcesClient:
                 'platform': self.get_platform_name()[0]
             }
             submissions.append(submission)
+        time.sleep(0.2) # You can make 5 requests per second to Codeforces API, so you need to wait for 0.2 seconds to avoid Call limit error.
         return submissions
