@@ -25,12 +25,6 @@ class CodeforcesClient:
     def get_platform_name():
         return "Codeforces", "CF"
 
-    def get_submissions_page_count(self):
-        base_url = "https://codeforces.com/submissions/" + self.user
-        sub_soup = self.__get_content_soup(base_url)
-        pages = sub_soup.findAll('span', attrs={'class': 'page-index'})
-        return int(pages[-1].find('a').text)
-
     def get_submission_code(self, contest_id, submission_id):
         try:
             return self.cf_parser.get_solution(contest_id, submission_id)
@@ -38,12 +32,12 @@ class CodeforcesClient:
             return None
 
     def get_contest_tags(self, problem_url):
-        con_soup = self.__get_content_soup(problem_url)
-        span_tags = con_soup.findAll('span', attrs={'class': 'tag-box'})
-        return [x.text.strip() for x in span_tags]
+        contest_id, index = problem_url.split("/")[-3], problem_url.split("/")[-1]
+        print(contest_id, index, "\n")
+        return self.cf_parser.get_tags(contest_id, index, include_rating=True)
 
-    def get_user_submissions(self, page_index):
-        response = self.cf_api.user_status(self.user, (page_index - 1) * 50 + 1, 50)
+    def get_user_submissions(self, *args):
+        response = self.cf_api.user_status(self.user)
 
         submissions = []
         for row in response['result']:
