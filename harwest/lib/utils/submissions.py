@@ -28,7 +28,7 @@ class Submissions:
       if platform[0].lower() not in self.user_data:
         continue
       handle_name = self.user_data[platform[0].lower()]
-      svg_url = "https://run.kaist.ac.kr/badges/{platform}/{handle}.svg".format(
+      svg_url = "https://cp-logo.vercel.app/{platform}/{handle}".format(
         platform=platform[0].lower(),
         handle=handle_name
       )
