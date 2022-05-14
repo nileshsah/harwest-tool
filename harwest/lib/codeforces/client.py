@@ -36,7 +36,8 @@ class CodeforcesClient:
         # For debug purpose
         # print(sub_url)
         # open("last_submission_page.html", "w").write(str(sub_soup))
-        submission_code = sub_soup.find('pre', attrs={'id': 'program-source-text'})
+        submission_code = sub_soup.find(
+            'pre', attrs={'id': 'program-source-text'})
         if submission_code is None:
             return None
         return submission_code.text
@@ -57,12 +58,15 @@ class CodeforcesClient:
 
         submissions = []
         for row in response['result']:
-        
+            if 'contestId' not in row.keys():
+                continue
             contest_id = row['contestId']
-            if contest_id > 100000: continue  # Ignore gym submissions
+            if contest_id > 100000:
+                continue  # Ignore gym submissions
 
             status = row['verdict']
-            if status != "OK": continue  # Only process accepted solutions
+            if status != "OK":
+                continue  # Only process accepted solutions
 
             submission_id = int(row['id'])
 
@@ -82,7 +86,8 @@ class CodeforcesClient:
             # print(submission_id, contest_id, problem_name, lang_name, contest_url)
 
             timestamp = row['creationTimeSeconds']
-            date_time_str = datetime.fromtimestamp(timestamp).strftime('%b/%d/%Y %H:%M')
+            date_time_str = datetime.fromtimestamp(
+                timestamp).strftime('%b/%d/%Y %H:%M')
 
             sub_url = "https://codeforces.com/contest/{contest_id}/submission/{submission_id}".format(
                 contest_id=contest_id,
