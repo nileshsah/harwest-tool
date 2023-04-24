@@ -6,6 +6,7 @@
   "GNU C++11": "cpp",
   "GNU C++14": "cpp",
   "GNU C++17": "cpp",
+  "GNU C++20 (64)": "cpp",
   "GNU C": "c",
   "MS C++": "cpp",
   "MS C++ 2017": "cpp",
